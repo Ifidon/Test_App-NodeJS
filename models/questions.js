@@ -7,7 +7,7 @@ const questionSchema = new Schema({
 		required: true
 	},
 
-	options: {
+	option: {
 		type: Array,
 		minlength: 2,
 		required: true

@@ -3,12 +3,12 @@ const Schema = mongoose.Schema;
 
 const Questions = require('./questions')
 
-
 const testSchema = new Schema({
-	testquestions: {
-		type: [Questions.questionSchema],
-		required: true
+	title: {
+		type: String
 	},
+
+	testquestions: [{type: Schema.Types.ObjectId, ref: Questions}],
 
 	testlength: {
 		type: Number,

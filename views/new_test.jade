@@ -1,0 +1,8 @@
+h1 Create New Test
+
+form(method='post' action='/tests/create')
+	input(type=text, name='title' placeholder="Enter Test Title or Category")
+	input(type='number', name='testlength' placeholder='Length of test (Number of questions')
+	input(type='number', name='testduration' placeholder='Test Duration(Mins)')
+	input(type='submit' value='Save')
+
