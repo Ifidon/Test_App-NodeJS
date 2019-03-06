@@ -6,12 +6,16 @@ const Tests =  require('./tests')
 
 userTestSchema = new Schema({
 	user_name: {
-		type: String,
+		type: String
+	},
+
+	user_des: {
+		type: String
 	},
 
 	utest: {
 		type: Array,
-		required: true
+		// required: true
 	}
 }, {
 	timestamps: true

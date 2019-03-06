@@ -1,0 +1,8 @@
+div
+	h1= user.user_name 
+	h4= user.user_des
+
+	ul
+	each test in tests
+		li
+			a(href='/take_test/#{user.user_name}/#{test.title}')= test.title

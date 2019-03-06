@@ -9,16 +9,41 @@ const codes = require('../jsscript')
 
 error = {'status': 400}
 
-// Take Tests
+// Get user
 
 router.route('/')
 .get((req, res, next) => {
-	userTests.find()
-	// .populate('utest')
-	.then((usertest) => {
-		res.send(usertest)
+	res.render('getuser')	
+})
+
+.post((req, res, next) => {
+	// tests = Tests.find()
+	userTests.create(req.body)
+	.then((user) => {
+		Tests.find({}, {_id: 0})
+		.then((tests) => {
+			res.render('usertest', {user, tests})
+			// console.log(tests)
+		})
+	})
+	.catch((e) => {
+		error.message = e.message
+		res.render('error', error)
 	})
 })
+
+
+
+// Take Tests
+
+// router.route('/')
+// .get((req, res, next) => {
+// 	userTests.find()
+// 	// .populate('utest')
+// 	.then((usertest) => {
+// 		res.send(usertest)
+// 	})
+// })
 
 // router.route('/:test_id')
 // .get((req, res, next) => {
