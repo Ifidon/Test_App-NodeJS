@@ -33,6 +33,43 @@ router.route('/')
 })
 
 
+router.route('/:user_id/:test_id/')
+.get((req, res, next) => {
+	userTests.findOne({_id: req.params.user_id})
+	.then((user) => {
+		Tests.findOne({_id: req.params.test_id})
+		.populate('testquestions')
+		.then((test) => {
+			// res.render('teststartpage', {user, test})
+			res.send(test)
+		})
+		return null
+	})
+	.catch((e) => {
+		error.message = e.message
+		res.render('error', error)
+	})
+})
+
+.post((req, res, next) => {
+	this_test = []
+	Tests.findOne({_id: req.params.test_id})
+	.populate('testquestions')
+	.then((test) => {
+		for (index in test.testquestions) {
+			this_test.push({_id: test.testquestions[index]._id, question: test.testquestions[index].question, options: test.testquestions[index].option, submission: ' ' })
+		}
+		res.send(this_test)
+		return null
+	})
+	userTests.findOne({_id: req.params.user_id})
+	.then((user) => {
+		user.utest.push(this_test)
+		user.save()
+		res.render('user_test', {user, test: this_test})
+	})
+})
+
 
 // Take Tests
 

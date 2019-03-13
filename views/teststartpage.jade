@@ -1,0 +1,11 @@
+div
+	h1= user.user_name 
+	h4= user.user_des
+
+	h4 Test Details
+	p= "Test Title: " + test.title
+	p= "No. of Questions: " + test.testlength
+	p= "Test Duration: " + test.testduration + " mins"
+
+	form(method='post', action='/take_test/#{user._id}/#{test._id}')
+		button(type='submit') Start Test
