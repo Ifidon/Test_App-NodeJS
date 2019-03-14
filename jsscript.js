@@ -25,6 +25,20 @@ module.exports = {
 		else {
 			return 0
 		}
+	},
+
+	random_number: function(size) {
+		arr = []
+		while (arr.length < size) {
+			num = Math.floor(Math.random() * size)
+			if (! arr.includes(num)) {
+				arr.push(num)
+			}
+			else {
+				continue
+			}
+		}
+		return arr
 	}
 
 }

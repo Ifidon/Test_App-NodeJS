@@ -20,9 +20,16 @@ router.route('/')
 	// tests = Tests.find()
 	userTests.create(req.body)
 	.then((user) => {
-		Tests.find({}, {_id: 0})
-		.then((tests) => {
-			res.render('usertest', {user, tests})
+		Tests.find()
+		.then((tests, err) => {
+			if(err) {
+				error.message = err.message
+				res.render('error', error)
+			}
+			else {
+				res.render('usertest', {user, tests})
+			}
+			
 			// console.log(tests)
 		})
 	})
@@ -33,15 +40,15 @@ router.route('/')
 })
 
 
-router.route('/:user_id/:test_id/')
+router.route('/:user_id/:test_id')
 .get((req, res, next) => {
 	userTests.findOne({_id: req.params.user_id})
 	.then((user) => {
 		Tests.findOne({_id: req.params.test_id})
 		.populate('testquestions')
 		.then((test) => {
-			// res.render('teststartpage', {user, test})
-			res.send(test)
+			res.render('teststartpage', {user, test})
+			// res.send(test)
 		})
 		return null
 	})
@@ -56,18 +63,37 @@ router.route('/:user_id/:test_id/')
 	Tests.findOne({_id: req.params.test_id})
 	.populate('testquestions')
 	.then((test) => {
-		for (index in test.testquestions) {
+		for (index=0; index<test.testquestions.length; index++) {
 			this_test.push({_id: test.testquestions[index]._id, question: test.testquestions[index].question, options: test.testquestions[index].option, submission: ' ' })
 		}
-		res.send(this_test)
-		return null
+		userTests.findOne({_id: req.params.user_id})
+		.then((user) => {
+			console.log(this_test)
+			user.utest.push(this_test)
+			user.save()
+			test_ind = user.utest.length - 1;
+			the_test = user.utest[test_ind]
+			num = 0
+			seq = codes.random_number(the_test.length)
+			console.log(seq)
+			// res.send(the_test)
+			res.render('qpage', {user, the_test, seq, num})
+		})
+
 	})
-	userTests.findOne({_id: req.params.user_id})
-	.then((user) => {
-		user.utest.push(this_test)
-		user.save()
-		res.render('user_test', {user, test: this_test})
+	.catch((e) => {
+		error.message = e.message;
+		res.render('error', error)
 	})
+	// userTests.findOne({_id: req.params.user_id})
+	// .then((user) => {
+	// 	// user.utest.push(this_test)
+	// 	// user.save()
+	// 	// test = this_test
+	// 	// ind = Math.floor(Math.random() * test.length)
+	// 	// console.log(ind)
+	// 	res.send(user.utest[7])
+	// })
 })
 
 

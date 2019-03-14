@@ -4,7 +4,7 @@ div
 
 	h4 Test Details
 	p= "Test Title: " + test.title
-	p= "No. of Questions: " + test.testlength
+	p= "No. of Questions: " + test.testquestions.length
 	p= "Test Duration: " + test.testduration + " mins"
 
 	form(method='post', action='/take_test/#{user._id}/#{test._id}')
